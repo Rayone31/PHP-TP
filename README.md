@@ -16,4 +16,4 @@ CV Sharing: Each CV can be shared with other users
 Collaboration: Users can collaborate on projects in groups
 4. Security:
 Rights management: Users can choose who to share their CVs and projects with (private, public or user-specific).
-Data protection: Encrypting passwords and implementing best practices for data security.
+Data protecgittion: Encrypting passwords and implementing best practices for data security.
