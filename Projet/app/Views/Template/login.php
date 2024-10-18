@@ -1,8 +1,7 @@
 <?php
 session_start();
-require '../../Model/db.php'; // Inclure la connexion à la base de données
+require '../../Model/db.php';
 
-// Vérifier si le formulaire est soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
@@ -12,26 +11,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Tous les champs sont obligatoires.";
     } else {
         if ($role == 'admin') {
-            // Préparer la requête SQL pour récupérer l'admin par nom d'utilisateur
+            
             $stmt = $pdo->prepare('SELECT * FROM admins WHERE username = ?');
         } else {
-            // Préparer la requête SQL pour récupérer l'utilisateur par nom d'utilisateur
+            
             $stmt = $pdo->prepare('SELECT * FROM Users WHERE username = ?');
         }
 
         $stmt->execute([$username]);
         $user = $stmt->fetch();
 
-        // Si l'utilisateur est trouvé, vérifier le mot de passe
         if ($user && password_verify($password, $user['password'])) {
-            // Définir la session pour l'utilisateur
+            $_SESSION['username'] = $username;
             $_SESSION['is_admin'] = ($role == 'admin');
-            // Rediriger vers la page appropriée
-            if ($role == 'admin') {
-                header("Location: admin_index.php");
-            } else {
-                header("Location: user_index.php");
-            }
+            $_SESSION['user_id'] = $user['id'];
+            // redirection vers la page d'accueil
+            header("Location: accueil.php");
             exit;
         } else {
             $error = "Nom d'utilisateur ou mot de passe invalide !";
