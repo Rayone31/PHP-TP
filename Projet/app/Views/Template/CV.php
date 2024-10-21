@@ -13,6 +13,8 @@ if (!isset($_GET['id'])) {
 }
 
 $user_id = intval($_GET['id']);
+$current_user_id = $_SESSION['user_id'];
+$is_admin = $_SESSION['is_admin'];
 
 $stmt = $pdo->prepare('SELECT * FROM CV WHERE Users_id = ?');
 $stmt->execute([$user_id]);
@@ -38,7 +40,6 @@ if (!$user) {
     exit;
 }
 
-// Vérifiez si le CV est public
 $stmt = $pdo->prepare('SELECT * FROM CV_public WHERE CV_id = ?');
 $stmt->execute([$user['cv_id']]);
 $is_public = $stmt->fetch() ? true : false;
@@ -54,11 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $experience = trim($_POST['experience']);
     $visibility = trim($_POST['visibility']);
 
-    // Supprimer l'entrée existante de CV_public
     $stmt = $pdo->prepare('DELETE FROM CV_public WHERE CV_id = ?');
     $stmt->execute([$user['cv_id']]);
 
-    // Mettre à jour le CV
     $stmt = $pdo->prepare('UPDATE CV SET name = ?, title = ?, contact = ?, profil = ?, competence = ?, centre_interet = ?, formation = ?, experience = ? WHERE Users_id = ?');
     if ($stmt->execute([$name, $title, $contact, $profil, $competence, $centre_interet, $formation, $experience, $user_id])) {
         if ($visibility === 'public') {
@@ -73,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,83 +81,74 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="cv-container">
-        <div class="header">
-            <h1>CV de <?php echo htmlspecialchars($user['username']); ?></h1>
-            <p><?php echo htmlspecialchars($user['title']); ?></p>
-            <p>Contact: <?php echo htmlspecialchars($user['contact']); ?></p>
+        <div class="sidebar">
+            <h2>Contact</h2>
+            <p>Nom: <?php echo htmlspecialchars($user['name']); ?></p>
+            <p>Titre: <?php echo htmlspecialchars($user['title']); ?></p>
+            <p>Email: <?php echo htmlspecialchars($user['contact']); ?></p>
         </div>
+        <div class="main-content">
+            <div class="sections-container">
+                <div id="profil-section" class="section">
+                    <h2>Profil</h2>
+                    <p><?php echo nl2br(htmlspecialchars($user['profil'])); ?></p>
+                </div>
 
-        <div class="sections-container">
-            <div id="profil-section" class="section">
-                <h2>Profil</h2>
-                <p><?php echo nl2br(htmlspecialchars($user['profil'])); ?></p>
+                <div id="competence-section" class="section">
+                    <h2>Compétences</h2>
+                    <ul>
+                        <li><?php echo nl2br(htmlspecialchars($user['competence'])); ?></li>
+                    </ul>
+                </div>
+
+                <div id="centre-interet-section" class="section">
+                    <h2>Centre d'intérêt</h2>
+                    <ul>
+                        <li><?php echo nl2br(htmlspecialchars($user['centre_interet'])); ?></li>
+                    </ul>
+                </div>
+
+                <div id="formation-section" class="section">
+                    <h2>Formation</h2>
+                    <ul>
+                        <li><?php echo nl2br(htmlspecialchars($user['formation'])); ?></li>
+                    </ul>
+                </div>
             </div>
 
-            <div id="competence-section" class="section">
-                <h2>Compétences</h2>
+            <div id="experience-section" class="section">
+                <h2>Expérience</h2>
                 <ul>
-                    <li><?php echo nl2br(htmlspecialchars($user['competence'])); ?></li>
+                    <li><?php echo nl2br(htmlspecialchars($user['experience'])); ?></li>
                 </ul>
             </div>
 
-            <div id="centre-interet-section" class="section">
-                <h2>Centre d'intérêt</h2>
-                <ul>
-                    <li><?php echo nl2br(htmlspecialchars($user['centre_interet'])); ?></li>
-                </ul>
+            <form method="POST" action="">
+                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" class="hidden-input" placeholder="Nom">
+                <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($user['title']); ?>" class="hidden-input" placeholder="Titre">
+                <input type="text" id="contact" name="contact" value="<?php echo htmlspecialchars($user['contact']); ?>" class="hidden-input" placeholder="Contact">
+                <textarea id="profil" name="profil" class="hidden-input" placeholder="Profil"><?php echo htmlspecialchars($user['profil']); ?></textarea>
+                <textarea id="competence" name="competence" class="hidden-input" placeholder="Compétences"><?php echo htmlspecialchars($user['competence']); ?></textarea>
+                <textarea id="centre_interet" name="centre_interet" class="hidden-input" placeholder="Centre d'intérêt"><?php echo htmlspecialchars($user['centre_interet']); ?></textarea>
+                <textarea id="formation" name="formation" class="hidden-input" placeholder="Formation"><?php echo htmlspecialchars($user['formation']); ?></textarea>
+                <textarea id="experience" name="experience" class="hidden-input" placeholder="Expérience"><?php echo htmlspecialchars($user['experience']); ?></textarea>
+                <input type="hidden" id="visibility" name="visibility" value="<?php echo $is_public ? 'public' : 'private'; ?>">
+                <?php if ($user_id === $current_user_id || $is_admin): ?>
+                    <button type="button" onclick="editCVFields()">Modifier</button>
+                    <button type="submit" class="edit-button" style="display:none;" id="saveButton">Enregistrer</button>
+                    <button type="button" class="hidden-input" id="toggleVisibilityButton" onclick="confirmVisibilityChange()" style="display:none;"><?php echo $is_public ? 'Public' : 'Privé'; ?></button>
+                <?php endif; ?>
+            </form>
+            <div class="links">
+                <h2>Accéder à :</h2>
+                <button onclick="window.location.href='profile.php?id=<?php echo $user_id; ?>'">Profil de <?php echo htmlspecialchars($user['username']); ?></button>
+                <button onclick="window.location.href='Project.php?id=<?php echo $user_id; ?>'">Projets de <?php echo htmlspecialchars($user['username']); ?></button>
             </div>
-
-            <div id="formation-section" class="section">
-                <h2>Formation</h2>
-                <ul>
-                    <li><?php echo nl2br(htmlspecialchars($user['formation'])); ?></li>
-                </ul>
+            <div class="back-button">
+                <button onclick="window.location.href='accueil.php'">Retour à l'accueil</button>
             </div>
         </div>
-
-        <div id="experience-section" class="section">
-            <h2>Expérience</h2>
-            <ul>
-                <li><?php echo nl2br(htmlspecialchars($user['experience'])); ?></li>
-            </ul>
-        </div>
-
-        <form method="POST" action="">
-            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" class="hidden-input" placeholder="Nom">
-            <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($user['title']); ?>" class="hidden-input" placeholder="Titre">
-            <input type="text" id="contact" name="contact" value="<?php echo htmlspecialchars($user['contact']); ?>" class="hidden-input" placeholder="Contact">
-            <textarea id="profil" name="profil" class="hidden-input" placeholder="Profil"><?php echo htmlspecialchars($user['profil']); ?></textarea>
-            <textarea id="competence" name="competence" class="hidden-input" placeholder="Compétences"><?php echo htmlspecialchars($user['competence']); ?></textarea>
-            <textarea id="centre_interet" name="centre_interet" class="hidden-input" placeholder="Centre d'intérêt"><?php echo htmlspecialchars($user['centre_interet']); ?></textarea>
-            <textarea id="formation" name="formation" class="hidden-input" placeholder="Formation"><?php echo htmlspecialchars($user['formation']); ?></textarea>
-            <textarea id="experience" name="experience" class="hidden-input" placeholder="Expérience"><?php echo htmlspecialchars($user['experience']); ?></textarea>
-            <input type="hidden" id="visibility" name="visibility" value="<?php echo $is_public ? 'public' : 'private'; ?>">
-            <button type="button" onclick="editCVFields()">Modifier</button>
-            <button type="submit" class="edit-button" style="display:none;" id="saveButton">Enregistrer</button>
-            <button type="button" id="toggleVisibilityButton" onclick="confirmVisibilityChange()"><?php echo $is_public ? 'Public' : 'Privé'; ?></button>
-        </form>
     </div>
-    <script>
-        function editCVFields() {
-            document.querySelectorAll('.hidden-input').forEach(input => input.style.display = 'block');
-            document.getElementById('saveButton').style.display = 'block';
-        }
-
-        function confirmVisibilityChange() {
-            const visibilityInput = document.getElementById('visibility');
-            const toggleButton = document.getElementById('toggleVisibilityButton');
-            if (visibilityInput.value === 'private') {
-                if (confirm("Êtes-vous sûr de vouloir rendre ce CV public ?")) {
-                    visibilityInput.value = 'public';
-                    toggleButton.textContent = 'Public';
-                }
-            } else {
-                if (confirm("Êtes-vous sûr de vouloir rendre ce CV privé ?")) {
-                    visibilityInput.value = 'private';
-                    toggleButton.textContent = 'Privé';
-                }
-            }
-        }
-    </script>
+    <script src="/Views/public/assets/script/js/cv.js"></script>
 </body>
 </html>

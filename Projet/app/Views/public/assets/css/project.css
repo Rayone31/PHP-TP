@@ -1,4 +1,4 @@
-/* profile.css */
+/* project.css */
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #f4f4f4;
@@ -14,37 +14,62 @@ body {
     text-align: center;
 }
 
-.profile-content {
+.project-content {
     width: 80%;
     margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.project {
     background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    width: 300px;
+    transition: transform 0.2s;
 }
 
-.profile-content h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-    font-size: 2em;
+.project:hover {
+    transform: scale(1.05);
 }
 
-.profile-content p {
-    font-size: 1.1em;
-    color: #555;
+.project h2 {
+    font-size: 1.5em;
     margin-bottom: 10px;
 }
 
-.profile-content input[type="text"],
-.profile-content input[type="email"],
-.profile-content textarea {
+.project p {
+    font-size: 1em;
+    color: #555;
+}
+
+.project-form {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.project-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.project-form input[type="text"],
+.project-form textarea {
     width: 100%;
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1em;
 }
 
 button {

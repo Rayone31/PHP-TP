@@ -49,11 +49,11 @@ $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2>Options</h2>
         <ul>
             <?php if ($is_admin): ?>
-                <li><a href="admin_dashboard.php">Tableau de bord Admin</a></li>
-                <li><a href="manage_users.php">Gérer les utilisateurs</a></li>
+                <li><a href="users_managment.php">Gérer les utilisateurs</a></li>
             <?php else: ?>
                 <li><a href="profile.php?id=<?php echo $user_id; ?>">Mon profil</a></li>
                 <li><a href="CV.php?id=<?php echo $user_id; ?>">Mon CV</a></li>
+                <li><a href="Project.php?id=<?php echo $user_id; ?>">Mes Projets</a></li>
             <?php endif; ?>
             <li><a href="logout.php">Déconnexion</a></li>
         </ul>

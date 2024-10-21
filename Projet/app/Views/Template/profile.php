@@ -13,6 +13,8 @@ if (!isset($_GET['id'])) {
 }
 
 $user_id = intval($_GET['id']);
+$current_user_id = $_SESSION['user_id']; // Assurez-vous que l'ID de l'utilisateur connecté est stocké dans la session
+$is_admin = $_SESSION['is_admin']; // Vérifiez si l'utilisateur connecté est un administrateur
 
 $stmt = $pdo->prepare('SELECT * FROM personal_info WHERE Users_id = ?');
 $stmt->execute([$user_id]);
@@ -76,19 +78,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>" style="display:none;">
             <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($user['profile_description'])); ?></p>
             <textarea id="profile_description" name="profile_description" style="display:none;"><?php echo htmlspecialchars($user['profile_description']); ?></textarea>
-            <button type="button" onclick="editAllFields()">Modifier</button>
-            <button type="submit" style="display:none;" id="saveButton">Enregistrer</button>
+            <?php if ($user_id === $current_user_id || $is_admin): ?>
+                <button type="button" onclick="editAllFields()">Modifier</button>
+                <button type="submit" style="display:none;" id="saveButton">Enregistrer</button>
+            <?php endif; ?>
         </form>
     </div>
-    <script>
-        function editAllFields() {
-            document.getElementById('name').style.display = 'block';
-            document.getElementById('title').style.display = 'block';
-            document.getElementById('email').style.display = 'block';
-            document.getElementById('phone').style.display = 'block';
-            document.getElementById('profile_description').style.display = 'block';
-            document.getElementById('saveButton').style.display = 'block';
-        }
-    </script>
+    <div class="back-button">
+        <button onclick="window.location.href='accueil.php'">Retour à l'accueil</button>
+    </div>
+    <script src="/Views/public/assets/script/js/profile.js"></script>
 </body>
 </html>

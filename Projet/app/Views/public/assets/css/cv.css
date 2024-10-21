@@ -1,40 +1,67 @@
+/* cv.css */
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
     color: #333;
-    transform: scale(0.8);
 }
 
 .cv-container {
-    width: 100%;
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
     margin: 20px auto;
     background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.6;
-    min-height: 100vh; /* Augmenter la hauteur minimale */
+}
+
+.sidebar {
+    width: 30%;
+    background-color: #007BFF;
+    color: white;
+    padding: 20px;
+    border-radius: 10px 0 0 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 24px;
+}
+
+.sidebar p {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.main-content {
+    width: 70%;
+    padding: 20px;
+    border-radius: 0 10px 10px 0;
 }
 
 .header {
     text-align: center;
     background-color: #007BFF;
     color: white;
-    padding: 20px;
-    border-radius: 10px 10px 0 0;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .header h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: 28px;
 }
 
 .header p {
-    margin: 5px 0;
-    font-size: 16px;
+    margin: 10px 0 0;
+    font-size: 18px;
 }
 
 .sections-container {
@@ -47,19 +74,26 @@ body {
 .section {
     width: 48%;
     background-color: #f9f9f9;
-    padding: 15px;
+    padding: 20px;
     margin-bottom: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    min-height: 200px; /* Augmenter la hauteur minimale des sections */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .section h2 {
     margin-top: 0;
     color: #007BFF;
-    font-size: 18px;
+    font-size: 20px;
     border-bottom: 2px solid #007BFF;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
+    position: relative;
 }
 
 .section ul {
@@ -69,14 +103,14 @@ body {
 
 .section ul li {
     background-color: #e9ecef;
-    margin: 5px 0;
-    padding: 10px;
+    margin: 10px 0;
+    padding: 15px;
     border-radius: 5px;
+    position: relative;
 }
 
 #experience-section {
     width: 100%;
-    min-height: 300px; /* Augmenter la hauteur minimale de la section expérience */
 }
 
 .hidden-input {
@@ -92,17 +126,35 @@ button {
     background-color: #007BFF;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     margin: 10px 0;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
-.edit-button {
-    display: none;
+.back-button {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.back-button button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    margin: 10px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.back-button button:hover {
+    background-color: #218838;
 }

@@ -1,14 +1,15 @@
 <?php
 session_start();
-require '../../Model/db.php'; // Include the database connection
+require '../../Model/db.php';
 
-// Check if the user is logged in
-$isLoggedIn = isset($_SESSION['user_id']); // Change this according to your login session management
+// Vérifier si l'utilisateur est connecté
+$isLoggedIn = isset($_SESSION['user_id']);
 
-// Optionally, you can fetch some general site information here
-// $stmt = $pdo->prepare('SELECT * FROM site_info WHERE id = 1');
-// $stmt->execute();
-// $siteInfo = $stmt->fetch();
+// Si l'utilisateur est connecté, rediriger vers la page de gestion de CV
+if ($isLoggedIn) {
+    header("Location: accueil.php"); // Modifier la redirection ici
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -17,29 +18,25 @@ $isLoggedIn = isset($_SESSION['user_id']); // Change this according to your logi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to the CV Portal</title>
-    <link rel="stylesheet" href="Views/public/assets/css/index.css">
+    <link rel="stylesheet" href="/Views/public/assets/css/index.css"> <!-- Chemin absolu -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Header Section -->
+        <!-- Section d'en-tête -->
         <header>
             <h1>Welcome to the CV Portal</h1>
             <p>Your one-stop solution for creating and managing CVs.</p>
         </header>
 
-        <!-- Main Content Section -->
+        <!-- Section principale -->
         <main>
-            <?php if ($isLoggedIn): ?>
-                <p>You are logged in. You can manage your CV from here.</p>
-                <a href="Views/Template/logout.php">Logout</a>
-            <?php else: ?>
-                <p>Please log in to access your CV or create a new one.</p>
-                <a href="Views/Template/login.php">Admin Login</a>
-                <a href="Views/Template/register.php">Create an Account</a>
-            <?php endif; ?>
+            <p>Please log in to access your CV or create a new one.</p>
+            <a href="/Views/Template/login.php">Login</a> <!-- Chemin absolu -->
+            <a href="/Views/Template/register.php">Create an Account</a> <!-- Chemin absolu -->
         </main>
 
-        <!-- Footer Section -->
+        <!-- Section pied de page -->
         <footer>
             <p>&copy; <?php echo date("Y"); ?> CV Portal. All rights reserved.</p>
         </footer>

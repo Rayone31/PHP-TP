@@ -88,51 +88,44 @@ body {
     color: white;
 }
 
+/* /Views/public/assets/css/accueil.css */
 .main-content {
-    margin-right: 220px;
     padding: 20px;
-    box-sizing: border-box;
-    max-width: calc(100% - 220px);
-    min-width: calc(100% - 220px);
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-top: 20px;
+    background-color: #f9f9f9;
 }
 
 .card-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center; /* Centrer les cartes */
+    justify-content: center;
 }
 
 .card-link {
-    text-decoration: none; /* Supprimer la décoration des liens */
-    color: inherit; /* Conserver la couleur du texte */
+    text-decoration: none;
+    color: inherit;
 }
 
 .card {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    flex: 1 1 calc(50% - 20px); /* 2 cartes par ligne avec un espace de 20px */
-    box-sizing: border-box;
-    transition: transform 0.2s; /* Transition pour l'effet de survol */
+    width: 300px;
+    transition: transform 0.2s;
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Déplacer légèrement la carte vers le haut */
+    transform: scale(1.05);
 }
 
 .card h2 {
-    margin-top: 0;
-    font-size: 20px;
+    font-size: 1.5em;
+    margin-bottom: 10px;
 }
 
 .card p {
-    font-size: 16px;
+    font-size: 1em;
     color: #555;
 }

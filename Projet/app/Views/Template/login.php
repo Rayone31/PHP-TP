@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="Views/public/assets/css/index.css">
+    <link rel="stylesheet" href="../../Views/public/assets/css/login.css">
 </head>
 <body>
     <div class="container">
@@ -58,8 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <label for="role">Role:</label>
             <select id="role" name="role" required>
-                <option value="admin">Admin</option>
                 <option value="user">User</option>
+                <option value="admin">Admin</option>
             </select>
             
             <input type="submit" value="Login">
