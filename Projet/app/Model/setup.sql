@@ -40,11 +40,11 @@ CREATE TABLE IF NOT EXISTS CV (
     title VARCHAR(150) NOT NULL,
     name VARCHAR(100) NOT NULL,
     profil VARCHAR(100) NOT NULL,
-    contact VARCHAR(100) NOT NULL,
-    competence VARCHAR(150) NOT NULL,
-    centre_interet VARCHAR(150) NOT NULL,
-    formation VARCHAR(150) NOT NULL,
-    experience VARCHAR(150) NOT NULL,
+    contact VARCHAR(1000) NOT NULL,
+    competence VARCHAR(1500) NOT NULL,
+    centre_interet VARCHAR(1500) NOT NULL,
+    formation VARCHAR(1500) NOT NULL,
+    experience VARCHAR(1500) NOT NULL,
     FOREIGN KEY (Users_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 

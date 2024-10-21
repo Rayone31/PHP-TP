@@ -6,10 +6,7 @@ require '../../Model/db.php';
 $isLoggedIn = isset($_SESSION['user_id']);
 
 // Si l'utilisateur est connecté, rediriger vers la page de gestion de CV
-if ($isLoggedIn) {
-    header("Location: accueil.php"); // Modifier la redirection ici
-    exit;
-}
+
 ?>
 
 <!DOCTYPE html>

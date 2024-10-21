@@ -1,10 +1,13 @@
 /* project.css */
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f4f4f4;
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    color: #333;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 .navbar {
@@ -15,12 +18,14 @@ body {
 }
 
 .project-content {
-    width: 80%;
+    width: 90%;
     margin: 20px auto;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
+    align-items: flex-start; /* Aligner les éléments en haut */
+    flex: 1; /* Permet à .project-content de prendre tout l'espace disponible */
 }
 
 .project {
@@ -29,8 +34,30 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 300px;
+    width: calc(25% - 40px); /* Ajuster la largeur des cartes en fonction de la taille de la page */
+    height: calc(25vh - 40px); /* Ajuster la hauteur des cartes en fonction de la taille de la page */
     transition: transform 0.2s;
+}
+
+@media (max-width: 1200px) {
+    .project {
+        width: calc(33.333% - 40px); /* Ajuster la largeur des cartes pour les écrans moyens */
+        height: calc(33.333vh - 40px); /* Ajuster la hauteur des cartes pour les écrans moyens */
+    }
+}
+
+@media (max-width: 768px) {
+    .project {
+        width: calc(50% - 40px); /* Ajuster la largeur des cartes pour les petits écrans */
+        height: calc(50vh - 40px); /* Ajuster la hauteur des cartes pour les petits écrans */
+    }
+}
+
+@media (max-width: 480px) {
+    .project {
+        width: calc(100% - 40px); /* Ajuster la largeur des cartes pour les très petits écrans */
+        height: calc(50vh - 40px); /* Ajuster la hauteur des cartes pour les très petits écrans */
+    }
 }
 
 .project:hover {
@@ -48,7 +75,7 @@ body {
 }
 
 .project-form {
-    width: 80%;
+    width: 90%;
     margin: 20px auto;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -72,7 +99,7 @@ body {
     border-radius: 5px;
 }
 
-button {
+button, .edit-button, .delete-button {
     background-color: #007BFF;
     color: white;
     border: none;
@@ -81,10 +108,27 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    height: 40px; /* Ajuster la hauteur des boutons pour qu'ils soient proportionnels */
 }
 
-button:hover {
+button:hover, .edit-button:hover, .delete-button:hover {
     background-color: #0056b3;
+}
+
+.edit-button {
+    background-color: #28a745;
+}
+
+.edit-button:hover {
+    background-color: #218838;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
 }
 
 .back-button {
@@ -105,4 +149,21 @@ button:hover {
 
 .back-button button:hover {
     background-color: #218838;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    flex-shrink: 0; /* Empêche le footer de rétrécir */
+}
+
+footer p {
+    margin: 0;
 }

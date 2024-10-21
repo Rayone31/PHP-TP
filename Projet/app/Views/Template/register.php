@@ -56,5 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="submit" value="S'inscrire">
         </form>
     </div>
+    <footer>
+        <p>&copy; <?php echo date("Y"); ?> CV Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>

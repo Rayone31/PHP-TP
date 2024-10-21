@@ -96,5 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         const projects = <?php echo json_encode($projects); ?>;
     </script>
     <script src="/Views/public/assets/script/js/project.js"></script>
+    <footer>
+        <p>&copy; <?php echo date("Y"); ?> CV Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>

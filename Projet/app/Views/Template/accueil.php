@@ -58,5 +58,8 @@ $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <li><a href="logout.php">Déconnexion</a></li>
         </ul>
     </div>
+    <footer>
+        <p>&copy; <?php echo date("Y"); ?> CV Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>

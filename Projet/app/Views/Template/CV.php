@@ -47,12 +47,14 @@ $is_public = $stmt->fetch() ? true : false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST['name']);
     $title = trim($_POST['title']);
-    $contact = trim($_POST['contact']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $contact = $email . ',' . $phone;
     $profil = trim($_POST['profil']);
-    $competence = trim($_POST['competence']);
-    $centre_interet = trim($_POST['centre_interet']);
-    $formation = trim($_POST['formation']);
-    $experience = trim($_POST['experience']);
+    $competence = implode(',', array_map('trim', $_POST['competence']));
+    $centre_interet = implode(',', array_map('trim', $_POST['centre_interet']));
+    $formation = implode(',', array_map('trim', $_POST['formation']));
+    $experience = implode(',', array_map('trim', $_POST['experience']));
     $visibility = trim($_POST['visibility']);
 
     $stmt = $pdo->prepare('DELETE FROM CV_public WHERE CV_id = ?');
@@ -70,6 +72,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Erreur lors de la mise à jour du CV.";
     }
 }
+
+// Diviser les centres d'intérêt en plusieurs éléments
+$centres_interet = explode(',', $user['centre_interet'] ?? '');
+
+// Diviser le contact en email et phone
+if (strpos($user['contact'] ?? '', ',') !== false) {
+    list($email, $phone) = explode(',', $user['contact']);
+} else {
+    $email = $user['contact'] ?? '';
+    $phone = '';
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -77,78 +90,118 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Views/public/assets/css/cv.css">
-    <title>CV de <?php echo htmlspecialchars($user['username']); ?></title>
+    <title>CV de <?php echo htmlspecialchars($user['username'] ?? ''); ?></title>
 </head>
 <body>
     <div class="cv-container">
         <div class="sidebar">
+            <h2 class="title"><?php echo htmlspecialchars($user['title'] ?? ''); ?></h2>
+            <p class="username"><?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
             <h2>Contact</h2>
-            <p>Nom: <?php echo htmlspecialchars($user['name']); ?></p>
-            <p>Titre: <?php echo htmlspecialchars($user['title']); ?></p>
-            <p>Email: <?php echo htmlspecialchars($user['contact']); ?></p>
+            <p>- Email: <?php echo htmlspecialchars($email ?? ''); ?></p>
+            <p>- Phone: <?php echo htmlspecialchars($phone ?? ''); ?></p>
+            <h2>Centre d'intérêt</h2>
+            <ul>
+                <?php foreach ($centres_interet as $interet): ?>
+                    <li>- <?php echo htmlspecialchars(trim($interet) ?? ''); ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <h2>Compétences</h2>
+            <ul>
+                <?php foreach (explode(',', $user['competence'] ?? '') as $competence): ?>
+                    <li>- <?php echo htmlspecialchars(trim($competence) ?? ''); ?></li>
+                <?php endforeach; ?>
+            </ul>
         </div>
         <div class="main-content">
             <div class="sections-container">
                 <div id="profil-section" class="section">
                     <h2>Profil</h2>
-                    <p><?php echo nl2br(htmlspecialchars($user['profil'])); ?></p>
-                </div>
-
-                <div id="competence-section" class="section">
-                    <h2>Compétences</h2>
-                    <ul>
-                        <li><?php echo nl2br(htmlspecialchars($user['competence'])); ?></li>
-                    </ul>
-                </div>
-
-                <div id="centre-interet-section" class="section">
-                    <h2>Centre d'intérêt</h2>
-                    <ul>
-                        <li><?php echo nl2br(htmlspecialchars($user['centre_interet'])); ?></li>
-                    </ul>
+                    <p><?php echo nl2br(htmlspecialchars($user['profil'] ?? '')); ?></p>
                 </div>
 
                 <div id="formation-section" class="section">
                     <h2>Formation</h2>
                     <ul>
-                        <li><?php echo nl2br(htmlspecialchars($user['formation'])); ?></li>
+                        <?php foreach (explode(',', $user['formation'] ?? '') as $formation): ?>
+                            <li>- <?php echo htmlspecialchars(trim($formation) ?? ''); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+
+                <div id="experience-section" class="section">
+                    <h2>Expérience</h2>
+                    <ul>
+                        <?php foreach (explode(',', $user['experience'] ?? '') as $experience): ?>
+                            <li>- <?php echo htmlspecialchars(trim($experience) ?? ''); ?></li>
+                        <?php endforeach; ?>
                     </ul>
                 </div>
             </div>
-
-            <div id="experience-section" class="section">
-                <h2>Expérience</h2>
-                <ul>
-                    <li><?php echo nl2br(htmlspecialchars($user['experience'])); ?></li>
-                </ul>
+        </div>
+    </div>
+    <div class="actions">
+        <h2>Actions</h2>
+        <form method="POST" action="">
+            <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name'] ?? ''); ?>" class="hidden-input" placeholder="Nom">
+            <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($user['title'] ?? ''); ?>" class="hidden-input" placeholder="Titre">
+            <div id="contact-fields" class="hidden-input">
+                <input type="text" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" placeholder="Email">
+                <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($phone ?? ''); ?>" placeholder="Phone">
             </div>
-
-            <form method="POST" action="">
-                <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($user['name']); ?>" class="hidden-input" placeholder="Nom">
-                <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($user['title']); ?>" class="hidden-input" placeholder="Titre">
-                <input type="text" id="contact" name="contact" value="<?php echo htmlspecialchars($user['contact']); ?>" class="hidden-input" placeholder="Contact">
-                <textarea id="profil" name="profil" class="hidden-input" placeholder="Profil"><?php echo htmlspecialchars($user['profil']); ?></textarea>
-                <textarea id="competence" name="competence" class="hidden-input" placeholder="Compétences"><?php echo htmlspecialchars($user['competence']); ?></textarea>
-                <textarea id="centre_interet" name="centre_interet" class="hidden-input" placeholder="Centre d'intérêt"><?php echo htmlspecialchars($user['centre_interet']); ?></textarea>
-                <textarea id="formation" name="formation" class="hidden-input" placeholder="Formation"><?php echo htmlspecialchars($user['formation']); ?></textarea>
-                <textarea id="experience" name="experience" class="hidden-input" placeholder="Expérience"><?php echo htmlspecialchars($user['experience']); ?></textarea>
-                <input type="hidden" id="visibility" name="visibility" value="<?php echo $is_public ? 'public' : 'private'; ?>">
-                <?php if ($user_id === $current_user_id || $is_admin): ?>
-                    <button type="button" onclick="editCVFields()">Modifier</button>
-                    <button type="submit" class="edit-button" style="display:none;" id="saveButton">Enregistrer</button>
-                    <button type="button" class="hidden-input" id="toggleVisibilityButton" onclick="confirmVisibilityChange()" style="display:none;"><?php echo $is_public ? 'Public' : 'Privé'; ?></button>
-                <?php endif; ?>
-            </form>
-            <div class="links">
-                <h2>Accéder à :</h2>
-                <button onclick="window.location.href='profile.php?id=<?php echo $user_id; ?>'">Profil de <?php echo htmlspecialchars($user['username']); ?></button>
-                <button onclick="window.location.href='Project.php?id=<?php echo $user_id; ?>'">Projets de <?php echo htmlspecialchars($user['username']); ?></button>
+            <textarea id="profil" name="profil" class="hidden-input" placeholder="Profil" rows="6"><?php echo htmlspecialchars($user['profil'] ?? ''); ?></textarea>
+            <div id="competence-fields" class="hidden-input">
+                <?php foreach (explode(',', $user['competence'] ?? '') as $competence): ?>
+                    <div>
+                        <input type="text" name="competence[]" value="<?php echo htmlspecialchars(trim($competence) ?? ''); ?>" placeholder="Compétence">
+                        <button type="button" onclick="removeField(this)">Supprimer</button>
+                    </div>
+                <?php endforeach; ?>
+                <button type="button" onclick="addField('competence')">Ajouter une compétence</button>
             </div>
-            <div class="back-button">
-                <button onclick="window.location.href='accueil.php'">Retour à l'accueil</button>
+            <div id="centre_interet-fields" class="hidden-input">
+                <?php foreach (explode(',', $user['centre_interet'] ?? '') as $centre_interet): ?>
+                    <div>
+                        <input type="text" name="centre_interet[]" value="<?php echo htmlspecialchars(trim($centre_interet) ?? ''); ?>" placeholder="Centre d'intérêt">
+                        <button type="button" onclick="removeField(this)">Supprimer</button>
+                    </div>
+                <?php endforeach; ?>
+                <button type="button" onclick="addField('centre_interet')">Ajouter un centre d'intérêt</button>
             </div>
+            <div id="formation-fields" class="hidden-input">
+                <?php foreach (explode(',', $user['formation'] ?? '') as $formation): ?>
+                    <div>
+                        <input type="text" name="formation[]" value="<?php echo htmlspecialchars(trim($formation) ?? ''); ?>" placeholder="Formation">
+                        <button type="button" onclick="removeField(this)">Supprimer</button>
+                    </div>
+                <?php endforeach; ?>
+                <button type="button" onclick="addField('formation')">Ajouter une formation</button>
+            </div>
+            <div id="experience-fields" class="hidden-input">
+                <?php foreach (explode(',', $user['experience'] ?? '') as $experience): ?>
+                    <div>
+                        <input type="text" name="experience[]" value="<?php echo htmlspecialchars(trim($experience) ?? ''); ?>" placeholder="Expérience">
+                        <button type="button" onclick="removeField(this)">Supprimer</button>
+                    </div>
+                <?php endforeach; ?>
+                <button type="button" onclick="addField('experience')">Ajouter une expérience</button>
+            </div>
+            <input type="hidden" id="visibility" name="visibility" value="<?php echo $is_public ? 'public' : 'private'; ?>">
+            <?php if ($user_id === $current_user_id || $is_admin): ?>
+                <button type="button" onclick="editCVFields()">Modifier</button>
+                <button type="submit" class="edit-button" style="display:none;" id="saveButton">Enregistrer</button>
+                <button type="button" class="hidden-input" id="toggleVisibilityButton" onclick="confirmVisibilityChange()" style="display:none;"><?php echo $is_public ? 'Public' : 'Privé'; ?></button>
+            <?php endif; ?>
+        </form>
+        <button onclick="window.location.href='profile.php?id=<?php echo $user_id; ?>'">Profil de <?php echo htmlspecialchars($user['username'] ?? ''); ?></button>
+        <button onclick="window.location.href='Project.php?id=<?php echo $user_id; ?>'">Projets de <?php echo htmlspecialchars($user['username'] ?? ''); ?></button>
+        <div class="back-button">
+            <button onclick="window.location.href='accueil.php'">Retour à l'accueil</button>
         </div>
     </div>
     <script src="/Views/public/assets/script/js/cv.js"></script>
+    <footer>
+        <p>&copy; <?php echo date("Y"); ?> CV Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>

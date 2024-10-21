@@ -1,6 +1,8 @@
 /* cv.css */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&display=swap');
+
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Merriweather', serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
@@ -27,16 +29,52 @@ body {
     padding: 20px;
     border-radius: 10px 0 0 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centrer le texte dans la sidebar */
 }
 
 .sidebar h2 {
     margin-top: 0;
     font-size: 24px;
+    margin-bottom: 10px;
 }
 
-.sidebar p {
+.sidebar p, .sidebar ul {
     margin: 10px 0;
     font-size: 18px;
+    text-align: left; /* Réaligner le texte des paragraphes et des listes à gauche */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    background-color: #e9ecef;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    color: #333;
+}
+
+.sidebar .username {
+    font-size: 24px; /* Agrandir la police pour le nom d'utilisateur */
+    font-weight: bold;
+    text-align: center; /* Centrer le texte */
+    margin-bottom: 20px; /* Ajouter une marge en bas */
+}
+
+.sidebar .title {
+    font-size: 32px; /* Agrandir la police pour le titre */
+    font-weight: 900; /* Rendre le titre plus épais */
+    text-align: center; /* Centrer le texte */
+    margin-bottom: 20px; /* Ajouter une marge en bas */
+    padding: 10px; /* Ajouter du padding pour l'encadrement */
+    border: 2px solid white; /* Ajouter une bordure blanche */
+    border-radius: 10px; /* Ajouter des coins arrondis */
+    color: #007BFF; /* Changer la couleur du texte en bleu */
+    background-color: white; /* Ajouter un fond blanc pour le titre */
+    text-transform: uppercase; /* Appliquer un style majuscule */
 }
 
 .main-content {
@@ -66,13 +104,12 @@ body {
 
 .sections-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 20px;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .section {
-    width: 48%;
+    width: 100%;
     background-color: #f9f9f9;
     padding: 20px;
     margin-bottom: 20px;
@@ -93,7 +130,6 @@ body {
     font-size: 20px;
     border-bottom: 2px solid #007BFF;
     padding-bottom: 10px;
-    position: relative;
 }
 
 .section ul {
@@ -106,11 +142,6 @@ body {
     margin: 10px 0;
     padding: 15px;
     border-radius: 5px;
-    position: relative;
-}
-
-#experience-section {
-    width: 100%;
 }
 
 .hidden-input {
@@ -138,12 +169,24 @@ button:hover {
     background-color: #0056b3;
 }
 
-.back-button {
+.actions {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin-top: 30px;
 }
 
-.back-button button {
+.actions h2 {
+    margin-top: 0;
+    color: #007BFF;
+    font-size: 20px;
+    border-bottom: 2px solid #007BFF;
+    padding-bottom: 10px;
+}
+
+.actions button {
     background-color: #28a745;
     color: white;
     border: none;
@@ -155,6 +198,22 @@ button:hover {
     transition: background-color 0.3s ease;
 }
 
-.back-button button:hover {
+.actions button:hover {
     background-color: #218838;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
 }

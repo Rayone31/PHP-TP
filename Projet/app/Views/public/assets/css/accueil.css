@@ -1,9 +1,38 @@
-body {
+/* accueil.css */
+html, body {
+    height: 100%;
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f9;
+    padding: 0;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Reste du CSS existant */
 .navbar {
     background-color: #333;
     color: white;
@@ -86,12 +115,6 @@ body {
 .sidebar ul li a:hover {
     background-color: #007bff;
     color: white;
-}
-
-/* /Views/public/assets/css/accueil.css */
-.main-content {
-    padding: 20px;
-    background-color: #f9f9f9;
 }
 
 .card-container {

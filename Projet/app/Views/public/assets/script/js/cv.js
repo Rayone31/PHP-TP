@@ -19,3 +19,25 @@ function confirmVisibilityChange() {
         }
     }
 }
+
+function addField(section) {
+    const container = document.getElementById(`${section}-fields`);
+    const div = document.createElement('div');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = `${section}[]`;
+    input.placeholder = section.charAt(0).toUpperCase() + section.slice(1);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = 'Supprimer';
+    button.onclick = function() {
+        removeField(button);
+    };
+    div.appendChild(input);
+    div.appendChild(button);
+    container.appendChild(div);
+}
+
+function removeField(button) {
+    button.parentElement.remove();
+}

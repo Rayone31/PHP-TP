@@ -88,5 +88,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button onclick="window.location.href='accueil.php'">Retour à l'accueil</button>
     </div>
     <script src="/Views/public/assets/script/js/profile.js"></script>
+    <footer>
+        <p>&copy; <?php echo date("Y"); ?> CV Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>

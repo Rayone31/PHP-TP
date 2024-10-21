@@ -1,10 +1,14 @@
 /* profile.css */
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f4f4f4;
+html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
-    color: #333;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Assure que le body prend toute la hauteur de la fenêtre */
 }
 
 .navbar {
@@ -21,6 +25,7 @@ body {
     padding: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    flex: 1; /* Permet à .profile-content de prendre tout l'espace disponible */
 }
 
 .profile-content h2 {
@@ -80,4 +85,19 @@ button:hover {
 
 .back-button button:hover {
     background-color: #218838;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    width: 100%;
+    flex-shrink: 0; /* Empêche le footer de rétrécir */
+}
+
+footer p {
+    margin: 0;
 }
