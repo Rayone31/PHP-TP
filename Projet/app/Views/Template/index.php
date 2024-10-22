@@ -1,11 +1,11 @@
 <?php
+
 session_start();
+
 require '../../Model/db.php';
 
 // Vérifier si l'utilisateur est connecté
 $isLoggedIn = isset($_SESSION['user_id']);
-
-// Si l'utilisateur est connecté, rediriger vers la page de gestion de CV
 
 ?>
 
@@ -15,25 +15,23 @@ $isLoggedIn = isset($_SESSION['user_id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to the CV Portal</title>
-    <link rel="stylesheet" href="/Views/public/assets/css/index.css"> <!-- Chemin absolu -->
+    <link rel="stylesheet" href="/Views/public/assets/css/index.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Section d'en-tête -->
         <header>
             <h1>Welcome to the CV Portal</h1>
             <p>Your one-stop solution for creating and managing CVs.</p>
         </header>
 
-        <!-- Section principale -->
         <main>
             <p>Please log in to access your CV or create a new one.</p>
-            <a href="/Views/Template/login.php">Login</a> <!-- Chemin absolu -->
-            <a href="/Views/Template/register.php">Create an Account</a> <!-- Chemin absolu -->
+            <a href="/Views/Template/login.php">Login</a> 
+            <a href="/Views/Template/register.php">Create an Account</a> 
         </main>
 
-        <!-- Section pied de page -->
+       
         <footer>
             <p>&copy; <?php echo date("Y"); ?> CV Portal. All rights reserved.</p>
         </footer>
