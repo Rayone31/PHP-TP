@@ -2,7 +2,6 @@
 session_start();
 require '../../Model/db.php';
 
-// Vérifier si l'utilisateur est connecté
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
@@ -12,7 +11,6 @@ $username = $_SESSION['username'];
 $is_admin = $_SESSION['is_admin']; 
 $user_id = $_SESSION['user_id']; 
 
-// Récupérer les CV publics
 $stmt = $pdo->prepare('SELECT c.id, c.name, c.title, c.profil FROM CV c JOIN CV_public cp ON c.id = cp.CV_id');
 $stmt->execute();
 $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -2,23 +2,19 @@
 session_start();
 require '../../Model/db.php';
 
-// Vérifier si l'utilisateur est connecté et est un administrateur
 if (!isset($_SESSION['username']) || !$_SESSION['is_admin']) {
     header("Location: login.php");
     exit;
 }
 
-// Récupérer tous les utilisateurs
 $stmt = $pdo->prepare('SELECT * FROM Users');
 $stmt->execute();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Supprimer un utilisateur et ses enregistrements associés
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['delete_user_id'])) {
         $delete_user_id = intval($_POST['delete_user_id']);
 
-        // Supprimer les enregistrements associés dans les tables dépendantes
         $stmt = $pdo->prepare('DELETE FROM personal_info WHERE Users_id = ?');
         $stmt->execute([$delete_user_id]);
 
@@ -28,7 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $pdo->prepare('DELETE FROM project WHERE User_id = ?');
         $stmt->execute([$delete_user_id]);
 
-        // Supprimer l'utilisateur
         $stmt = $pdo->prepare('DELETE FROM Users WHERE id = ?');
         $stmt->execute([$delete_user_id]);
 

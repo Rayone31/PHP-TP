@@ -24,8 +24,8 @@ body {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    align-items: flex-start; /* Aligner les éléments en haut */
-    flex: 1; /* Permet à .project-content de prendre tout l'espace disponible */
+    align-items: flex-start;
+    flex: 1; 
 }
 
 .project {
@@ -34,29 +34,29 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: calc(25% - 40px); /* Ajuster la largeur des cartes en fonction de la taille de la page */
-    height: calc(25vh - 40px); /* Ajuster la hauteur des cartes en fonction de la taille de la page */
+    width: calc(25% - 40px); 
+    height: calc(25vh - 40px); 
     transition: transform 0.2s;
 }
 
 @media (max-width: 1200px) {
     .project {
-        width: calc(33.333% - 40px); /* Ajuster la largeur des cartes pour les écrans moyens */
-        height: calc(33.333vh - 40px); /* Ajuster la hauteur des cartes pour les écrans moyens */
+        width: calc(33.333% - 40px); 
+        height: calc(33.333vh - 40px); 
     }
 }
 
 @media (max-width: 768px) {
     .project {
-        width: calc(50% - 40px); /* Ajuster la largeur des cartes pour les petits écrans */
-        height: calc(50vh - 40px); /* Ajuster la hauteur des cartes pour les petits écrans */
+        width: calc(50% - 40px); 
+        height: calc(50vh - 40px);
     }
 }
 
 @media (max-width: 480px) {
     .project {
-        width: calc(100% - 40px); /* Ajuster la largeur des cartes pour les très petits écrans */
-        height: calc(50vh - 40px); /* Ajuster la hauteur des cartes pour les très petits écrans */
+        width: calc(100% - 40px); 
+        height: calc(50vh - 40px); 
     }
 }
 
@@ -108,7 +108,7 @@ button, .edit-button, .delete-button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    height: 40px; /* Ajuster la hauteur des boutons pour qu'ils soient proportionnels */
+    height: 40px; 
 }
 
 button:hover, .edit-button:hover, .delete-button:hover {
@@ -161,7 +161,7 @@ footer {
     position: relative;
     bottom: 0;
     width: 100%;
-    flex-shrink: 0; /* Empêche le footer de rétrécir */
+    flex-shrink: 0; 
 }
 
 footer p {

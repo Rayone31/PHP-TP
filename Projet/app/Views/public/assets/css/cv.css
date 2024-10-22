@@ -1,4 +1,3 @@
-/* cv.css */
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&display=swap');
 
 body {
@@ -29,7 +28,7 @@ body {
     padding: 20px;
     border-radius: 10px 0 0 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Centrer le texte dans la sidebar */
+    text-align: center;
 }
 
 .sidebar h2 {
@@ -41,7 +40,7 @@ body {
 .sidebar p, .sidebar ul {
     margin: 10px 0;
     font-size: 18px;
-    text-align: left; /* Réaligner le texte des paragraphes et des listes à gauche */
+    text-align: left; 
 }
 
 .sidebar ul {
@@ -58,23 +57,23 @@ body {
 }
 
 .sidebar .username {
-    font-size: 24px; /* Agrandir la police pour le nom d'utilisateur */
+    font-size: 24px;
     font-weight: bold;
-    text-align: center; /* Centrer le texte */
-    margin-bottom: 20px; /* Ajouter une marge en bas */
+    text-align: center; 
+    margin-bottom: 20px; 
 }
 
 .sidebar .title {
-    font-size: 32px; /* Agrandir la police pour le titre */
-    font-weight: 900; /* Rendre le titre plus épais */
-    text-align: center; /* Centrer le texte */
-    margin-bottom: 20px; /* Ajouter une marge en bas */
-    padding: 10px; /* Ajouter du padding pour l'encadrement */
-    border: 2px solid white; /* Ajouter une bordure blanche */
-    border-radius: 10px; /* Ajouter des coins arrondis */
-    color: #007BFF; /* Changer la couleur du texte en bleu */
-    background-color: white; /* Ajouter un fond blanc pour le titre */
-    text-transform: uppercase; /* Appliquer un style majuscule */
+    font-size: 32px; 
+    font-weight: 900;
+    text-align: center; 
+    margin-bottom: 20px; 
+    padding: 10px;
+    border: 2px solid white; 
+    border-radius: 10px; 
+    color: #007BFF; 
+    background-color: white; 
+    text-transform: uppercase; 
 }
 
 .main-content {

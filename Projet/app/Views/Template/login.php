@@ -25,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $username;
             $_SESSION['is_admin'] = ($role == 'admin');
             $_SESSION['user_id'] = $user['id'];
-            // redirection vers la page d'accueil
             header("Location: accueil.php");
             exit;
         } else {

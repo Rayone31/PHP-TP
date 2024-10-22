@@ -2,28 +2,22 @@
 require '../../Model/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupérer les données du formulaire
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    // Valider les données
     if (empty($username) || empty($password)) {
         $error = 'Veuillez remplir tous les champs.';
     } else {
-        // Vérifier si le nom d'utilisateur existe déjà
         $stmt = $pdo->prepare('SELECT COUNT(*) FROM Users WHERE username = ?');
         $stmt->execute([$username]);
         if ($stmt->fetchColumn() > 0) {
             $error = 'Nom d\'utilisateur déjà pris.';
         } else {
-            // Hacher le mot de passe
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Insérer les données dans la table Users
             $sql = "INSERT INTO Users (username, password) VALUES (:username, :password)";
             $stmt = $pdo->prepare($sql);
             if ($stmt->execute(['username' => $username, 'password' => $hashed_password])) {
-                // Redirection vers la page de connexion après une inscription réussie
                 header("Location: login.php");
                 exit;
             } else {

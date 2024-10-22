@@ -13,8 +13,8 @@ if (!isset($_GET['id'])) {
 }
 
 $user_id = intval($_GET['id']);
-$current_user_id = $_SESSION['user_id']; // Assurez-vous que l'ID de l'utilisateur connecté est stocké dans la session
-$is_admin = $_SESSION['is_admin']; // Vérifiez si l'utilisateur connecté est un administrateur
+$current_user_id = $_SESSION['user_id']; 
+$is_admin = $_SESSION['is_admin']; 
 
 $stmt = $pdo->prepare('SELECT * FROM project WHERE User_id = ?');
 $stmt->execute([$user_id]);
@@ -31,11 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $project_id = intval($_POST['project_id']);
 
         if ($project_id) {
-            // Mettre à jour le projet existant
             $stmt = $pdo->prepare('UPDATE project SET title = ?, description = ? WHERE id = ? AND User_id = ?');
             $stmt->execute([$title, $description, $project_id, $user_id]);
         } else {
-            // Ajouter un nouveau projet
             $stmt = $pdo->prepare('INSERT INTO project (User_id, title, description) VALUES (?, ?, ?)');
             $stmt->execute([$user_id, $title, $description]);
         }

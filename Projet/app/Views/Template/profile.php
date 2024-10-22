@@ -13,9 +13,8 @@ if (!isset($_GET['id'])) {
 }
 
 $user_id = intval($_GET['id']);
-$current_user_id = $_SESSION['user_id']; // Assurez-vous que l'ID de l'utilisateur connecté est stocké dans la session
-$is_admin = $_SESSION['is_admin']; // Vérifiez si l'utilisateur connecté est un administrateur
-
+$current_user_id = $_SESSION['user_id']; 
+$is_admin = $_SESSION['is_admin'];
 $stmt = $pdo->prepare('SELECT * FROM personal_info WHERE Users_id = ?');
 $stmt->execute([$user_id]);
 $personal_info = $stmt->fetch();

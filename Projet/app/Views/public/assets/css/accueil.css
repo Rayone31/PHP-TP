@@ -32,7 +32,6 @@ footer p {
     margin: 0;
 }
 
-/* Reste du CSS existant */
 .navbar {
     background-color: #333;
     color: white;
@@ -44,8 +43,8 @@ footer p {
 }
 
 .navbar h1 {
-    font-size: 18px; /* Réduire la taille de h1 */
-    margin: 0; /* Supprimer les marges par défaut */
+    font-size: 18px; 
+    margin: 0;
 }
 
 .username-box {
