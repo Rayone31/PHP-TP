@@ -16,7 +16,7 @@ $user_id = $_SESSION['user_id'];
 // Prépare et exécute une requête pour récupérer les CV publics
 $stmt = $pdo->prepare('SELECT c.id, c.name, c.title, c.profil FROM CV c JOIN CV_public cp ON c.id = cp.CV_id');
 $stmt->execute();
-$public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC); // Récupère tous les résultats de la requête
+$public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,16 +31,16 @@ $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC); // Récupère tous les résulta
         <h1>CV en ligne</h1>
     </div>
     <div class="username-box">
-        Utilisateur connecté : <?php echo htmlspecialchars($username); // Affiche le nom d'utilisateur ?>
+        Utilisateur connecté : <?php echo htmlspecialchars($username); ?>
     </div>
     <div class="main-content">
         <div class="card-container">
-            <?php foreach ($public_cvs as $cv): // Boucle à travers les CV publics ?>
+            <?php foreach ($public_cvs as $cv):?>
                 <a href="CV.php?id=<?php echo $cv['id']; ?>" class="card-link">
                     <div class="card">
-                        <h2><?php echo htmlspecialchars($cv['name']); // Affiche le nom du CV ?></h2>
-                        <p><?php echo htmlspecialchars($cv['title']); // Affiche le titre du CV ?></p>
-                        <p><?php echo nl2br(htmlspecialchars($cv['profil'])); // Affiche le profil du CV ?></p>
+                        <h2><?php echo htmlspecialchars($cv['name']);?></h2>
+                        <p><?php echo htmlspecialchars($cv['title']);?></p>
+                        <p><?php echo nl2br(htmlspecialchars($cv['profil']));?></p>
                     </div>
                 </a>
             <?php endforeach; ?>
@@ -49,9 +49,9 @@ $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC); // Récupère tous les résulta
     <div class="sidebar">
         <h2>Options</h2>
         <ul>
-            <?php if ($is_admin): // Si l'utilisateur est un administrateur ?>
+            <?php if ($is_admin):?>
                 <li><a href="users_managment.php">Gérer les utilisateurs</a></li>
-            <?php else: // Si l'utilisateur n'est pas un administrateur ?>
+            <?php else:?>
                 <li><a href="profile.php?id=<?php echo $user_id; ?>">Mon profil</a></li>
                 <li><a href="CV.php?id=<?php echo $user_id; ?>">Mon CV</a></li>
                 <li><a href="Project.php?id=<?php echo $user_id; ?>">Mes Projets</a></li>
@@ -60,7 +60,7 @@ $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC); // Récupère tous les résulta
         </ul>
     </div>
     <footer>
-        <p>&copy; <?php echo date("Y"); // Affiche l'année actuelle ?> CV Portal. All rights reserved.</p>
+        <p>&copy; <?php echo date("Y");?> CV Portal. All rights reserved.</p>
     </footer>
 </body>
 </html>

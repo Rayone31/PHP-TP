@@ -1,24 +1,29 @@
 <?php
-session_start();
-require '../../Model/db.php';
+session_start(); // Démarre la session
+require '../../Model/db.php'; 
 
+// Vérifie si l'utilisateur est connecté, sinon redirige vers la page de connexion
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit;
 }
 
+// Vérifie si l'ID de l'utilisateur est spécifié dans l'URL, sinon affiche un message d'erreur
 if (!isset($_GET['id'])) {
     echo "ID de l'utilisateur non spécifié.";
     exit;
 }
 
-$user_id = intval($_GET['id']);
+$user_id = intval($_GET['id']); 
 $current_user_id = $_SESSION['user_id']; 
-$is_admin = $_SESSION['is_admin'];
+$is_admin = $_SESSION['is_admin']; 
+
+// Prépare et exécute une requête pour récupérer les informations personnelles de l'utilisateur
 $stmt = $pdo->prepare('SELECT * FROM personal_info WHERE Users_id = ?');
 $stmt->execute([$user_id]);
 $personal_info = $stmt->fetch();
 
+// Si les informations personnelles n'existent pas, les crée avec des valeurs par défaut
 if (!$personal_info) {
     $stmt = $pdo->prepare('INSERT INTO personal_info (Users_id, name, title, email, phone, profile_description) VALUES (?, "", "", "", "", "")');
     $stmt->execute([$user_id]);
@@ -27,6 +32,7 @@ if (!$personal_info) {
     $personal_info = $stmt->fetch();
 }
 
+// Prépare et exécute une requête pour récupérer les informations de l'utilisateur
 $stmt = $pdo->prepare('SELECT u.username, p.name, p.title, p.email, p.phone, p.profile_description 
                        FROM Users u 
                        JOIN personal_info p ON u.id = p.Users_id 
@@ -34,11 +40,13 @@ $stmt = $pdo->prepare('SELECT u.username, p.name, p.title, p.email, p.phone, p.p
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();
 
+// Si l'utilisateur n'est pas trouvé, affiche un message d'erreur
 if (!$user) {
     echo "Utilisateur non trouvé.";
     exit;
 }
 
+// Si la méthode de la requête est POST, met à jour les informations personnelles de l'utilisateur
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST['name']);
     $title = trim($_POST['title']);
@@ -46,9 +54,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = trim($_POST['phone']);
     $profile_description = trim($_POST['profile_description']);
 
+    // Prépare et exécute une requête pour mettre à jour les informations personnelles
     $stmt = $pdo->prepare('UPDATE personal_info SET name = ?, title = ?, email = ?, phone = ?, profile_description = ? WHERE Users_id = ?');
     $stmt->execute([$name, $title, $email, $phone, $profile_description, $user_id]);
 
+    // Redirige vers la page de profil
     header("Location: profile.php?id=$user_id");
     exit;
 }
@@ -77,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>" style="display:none;">
             <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($user['profile_description'])); ?></p>
             <textarea id="profile_description" name="profile_description" style="display:none;"><?php echo htmlspecialchars($user['profile_description']); ?></textarea>
-            <?php if ($user_id === $current_user_id || $is_admin): ?>
+            <?php if ($user_id === $current_user_id || $is_admin):?>
                 <button type="button" onclick="editAllFields()">Modifier</button>
                 <button type="submit" style="display:none;" id="saveButton">Enregistrer</button>
             <?php endif; ?>

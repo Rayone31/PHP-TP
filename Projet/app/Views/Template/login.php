@@ -1,6 +1,6 @@
 <?php
-session_start(); // Démarre la session
-require '../../Model/db.php'; // Inclut le fichier de connexion à la base de données
+session_start();
+require '../../Model/db.php'; 
 
 // Vérifie si la méthode de la requête est POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($username) || empty($password) || empty($role)) {
         $error = "Tous les champs sont obligatoires.";
     } else {
-        // Prépare la requête SQL en fonction du rôle
         if ($role == 'admin') {
             $stmt = $pdo->prepare('SELECT * FROM admins WHERE username = ?');
         } else {
@@ -30,7 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['username'] = $username;
             $_SESSION['is_admin'] = ($role == 'admin');
             $_SESSION['user_id'] = $user['id'];
-            // Redirige vers la page d'accueil
             header("Location: accueil.php");
             exit;
         } else {
