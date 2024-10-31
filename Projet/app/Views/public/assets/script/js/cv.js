@@ -1,7 +1,33 @@
+function applyColors() {
+    const backgroundColor = document.getElementById('backgroundColor').value;
+    const sidebarColor = document.getElementById('sidebarColor').value;
+    
+    document.body.style.backgroundColor = backgroundColor;
+    document.querySelector('.sidebar').style.backgroundColor = sidebarColor;
+}
+
 function editCVFields() {
-    document.querySelectorAll('.hidden-input').forEach(input => input.style.display = 'block');
-    document.getElementById('saveButton').style.display = 'block';
-    document.getElementById('toggleVisibilityButton').style.display = 'block';
+    const hiddenInputs = document.querySelectorAll('.hidden-input');
+    const saveButton = document.getElementById('saveButton');
+    const toggleVisibilityButton = document.getElementById('toggleVisibilityButton');
+
+    // Vérifie si les champs sont actuellement visibles
+    const isVisible = hiddenInputs[0].style.display === 'block';
+
+    if (isVisible) {
+        // Masquer les champs
+        hiddenInputs.forEach(input => input.style.display = 'none');
+        saveButton.style.display = 'none';
+        toggleVisibilityButton.style.display = 'none';
+    } else {
+        // Afficher les champs
+        hiddenInputs.forEach(input => input.style.display = 'block');
+        saveButton.style.display = 'block';
+        toggleVisibilityButton.style.display = 'block';
+
+        // Appliquer les couleurs lors de l'édition
+        applyColors();
+    }
 }
 
 function confirmVisibilityChange() {

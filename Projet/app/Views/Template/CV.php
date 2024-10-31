@@ -28,7 +28,7 @@ if (!$cv_info) {
     $cv_info = $stmt->fetch();
 }
 
-$stmt = $pdo->prepare('SELECT u.username, c.id as cv_id, c.name, c.title, c.contact, c.profil, c.competence, c.centre_interet, c.formation, c.experience 
+$stmt = $pdo->prepare('SELECT u.username, c.id as cv_id, c.name, c.title, c.contact, c.profil, c.competence, c.centre_interet, c.formation, c.experience, c.background_color, c.sidebar_color 
                        FROM Users u 
                        JOIN CV c ON u.id = c.Users_id 
                        WHERE u.id = ?');
@@ -56,12 +56,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $formation = implode(',', array_map('trim', $_POST['formation']));
     $experience = implode(',', array_map('trim', $_POST['experience']));
     $visibility = trim($_POST['visibility']);
+    $background_color = trim($_POST['backgroundColor']);
+    $sidebar_color = trim($_POST['sidebarColor']);
 
     $stmt = $pdo->prepare('DELETE FROM CV_public WHERE CV_id = ?');
     $stmt->execute([$user['cv_id']]);
 
-    $stmt = $pdo->prepare('UPDATE CV SET name = ?, title = ?, contact = ?, profil = ?, competence = ?, centre_interet = ?, formation = ?, experience = ? WHERE Users_id = ?');
-    if ($stmt->execute([$name, $title, $contact, $profil, $competence, $centre_interet, $formation, $experience, $user_id])) {
+    $stmt = $pdo->prepare('UPDATE CV SET name = ?, title = ?, contact = ?, profil = ?, competence = ?, centre_interet = ?, formation = ?, experience = ?, background_color = ?, sidebar_color = ? WHERE Users_id = ?');
+    if ($stmt->execute([$name, $title, $contact, $profil, $competence, $centre_interet, $formation, $experience, $background_color, $sidebar_color, $user_id])) {
         if ($visibility === 'public') {
             $stmt = $pdo->prepare('INSERT INTO CV_public (CV_id) VALUES (?)');
             $stmt->execute([$user['cv_id']]);
@@ -91,10 +93,23 @@ if (strpos($user['contact'] ?? '', ',') !== false) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/Views/public/assets/css/cv.css">
     <title>CV de <?php echo htmlspecialchars($user['username'] ?? ''); ?></title>
+    <style>
+        .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        .color-option {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
-<body>
+<body style="background-color: <?php echo htmlspecialchars($cv_info['background_color'] ?? '#f4f4f4'); ?>;">
     <div class="cv-container">
-        <div class="sidebar">
+        <div class="sidebar" style="background-color: <?php echo htmlspecialchars($user['sidebar_color'] ?? '#007BFF'); ?>;">
             <h2 class="title"><?php echo htmlspecialchars($user['title'] ?? ''); ?></h2>
             <p class="username"><?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
             <h2>Contact</h2>
@@ -186,11 +201,24 @@ if (strpos($user['contact'] ?? '', ',') !== false) {
                 <?php endforeach; ?>
                 <button type="button" onclick="addField('experience')">Ajouter une expérience</button>
             </div>
+            
             <input type="hidden" id="visibility" name="visibility" value="<?php echo $is_public ? 'public' : 'private'; ?>">
             <?php if ($user_id === $current_user_id || $is_admin): ?>
                 <button type="button" onclick="editCVFields()">Modifier</button>
                 <button type="submit" class="edit-button" style="display:none;" id="saveButton">Enregistrer</button>
                 <button type="button" class="hidden-input" id="toggleVisibilityButton" onclick="confirmVisibilityChange()" style="display:none;"><?php echo $is_public ? 'Public' : 'Privé'; ?></button>
+                
+                <div class="color-option hidden-input">
+                    <label for="backgroundColor">Couleur de fond:</label>
+                    <input type="color" id="backgroundColor" name="backgroundColor" value="#f4f4f4" oninput="updateColorPreview('backgroundColorPreview', this.value)">
+                    <div id="backgroundColorPreview" class="color-preview" style="background-color: #f4f4f4;"></div>
+                </div>
+                
+                <div class="color-option hidden-input">
+                    <label for="sidebarColor">Couleur de la barre latérale:</label>
+                    <input type="color" id="sidebarColor" name="sidebarColor" value="#007BFF" oninput="updateColorPreview('sidebarColorPreview', this.value)">
+                    <div id="sidebarColorPreview" class="color-preview" style="background-color: #007BFF;"></div>
+                </div>
             <?php endif; ?>
         </form>
         <button onclick="window.location.href='profile.php?id=<?php echo $user_id; ?>'">Profil de <?php echo htmlspecialchars($user['username'] ?? ''); ?></button>
@@ -199,7 +227,81 @@ if (strpos($user['contact'] ?? '', ',') !== false) {
             <button onclick="window.location.href='accueil.php'">Retour à l'accueil</button>
         </div>
     </div>
-    <script src="/Views/public/assets/script/js/cv.js"></script>
+    <script>
+        function updateColorPreview(previewId, color) {
+            document.getElementById(previewId).style.backgroundColor = color;
+        }
+
+        function applyColors() {
+            const backgroundColor = document.getElementById('backgroundColor').value;
+            const sidebarColor = document.getElementById('sidebarColor').value;
+            
+            document.body.style.backgroundColor = backgroundColor;
+            document.querySelector('.sidebar').style.backgroundColor = sidebarColor;
+        }
+
+        function editCVFields() {
+            const hiddenInputs = document.querySelectorAll('.hidden-input');
+            const saveButton = document.getElementById('saveButton');
+            const toggleVisibilityButton = document.getElementById('toggleVisibilityButton');
+
+            // Vérifie si les champs sont actuellement visibles
+            const isVisible = hiddenInputs[0].style.display === 'block';
+
+            if (isVisible) {
+                // Masquer les champs
+                hiddenInputs.forEach(input => input.style.display = 'none');
+                saveButton.style.display = 'none';
+                toggleVisibilityButton.style.display = 'none';
+            } else {
+                // Afficher les champs
+                hiddenInputs.forEach(input => input.style.display = 'block');
+                saveButton.style.display = 'block';
+                toggleVisibilityButton.style.display = 'block';
+
+                // Appliquer les couleurs lors de l'édition
+                applyColors();
+            }
+        }
+
+        function confirmVisibilityChange() {
+            const visibilityInput = document.getElementById('visibility');
+            const toggleButton = document.getElementById('toggleVisibilityButton');
+            if (visibilityInput.value === 'private') {
+                if (confirm("Êtes-vous sûr de vouloir rendre ce CV public ?")) {
+                    visibilityInput.value = 'public';
+                    toggleButton.textContent = 'Public';
+                }
+            } else {
+                if (confirm("Êtes-vous sûr de vouloir rendre ce CV privé ?")) {
+                    visibilityInput.value = 'private';
+                    toggleButton.textContent = 'Privé';
+                }
+            }
+        }
+
+        function addField(section) {
+            const container = document.getElementById(`${section}-fields`);
+            const div = document.createElement('div');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = `${section}[]`;
+            input.placeholder = section.charAt(0).toUpperCase() + section.slice(1);
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = 'Supprimer';
+            button.onclick = function() {
+                removeField(button);
+            };
+            div.appendChild(input);
+            div.appendChild(button);
+            container.appendChild(div);
+        }
+
+        function removeField(button) {
+            button.parentElement.remove();
+        }
+    </script>
     <footer>
         <p>&copy; <?php echo date("Y"); ?> CV Portal. All rights reserved.</p>
     </footer>

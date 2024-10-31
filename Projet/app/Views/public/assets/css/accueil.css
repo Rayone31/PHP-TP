@@ -135,6 +135,8 @@ footer p {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
     width: 300px;
+    height: 250px; 
+    overflow: hidden; 
     transition: transform 0.2s;
 }
 
@@ -145,9 +147,18 @@ footer p {
 .card h2 {
     font-size: 1.5em;
     margin-bottom: 10px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 }
 
 .card p {
     font-size: 1em;
     color: #555;
+    overflow: hidden; /* Masque le texte qui déborde */
+    text-overflow: ellipsis; /* Ajoute des points de suspension si le texte déborde */
+    display: -webkit-box; /* Pour les navigateurs qui supportent le flexbox */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Limite le nombre de lignes affichées */
+    line-clamp: 3; /* Limite le nombre de lignes affichées */
 }

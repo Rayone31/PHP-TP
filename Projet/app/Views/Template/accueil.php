@@ -40,7 +40,6 @@ $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="card">
                         <h2><?php echo htmlspecialchars($cv['name']);?></h2>
                         <p><?php echo htmlspecialchars($cv['title']);?></p>
-                        <p><?php echo nl2br(htmlspecialchars($cv['profil']));?></p>
                     </div>
                 </a>
             <?php endforeach; ?>

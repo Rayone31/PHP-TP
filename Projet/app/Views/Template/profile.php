@@ -40,7 +40,6 @@ $stmt = $pdo->prepare('SELECT u.username, p.name, p.title, p.email, p.phone, p.p
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();
 
-// Si l'utilisateur n'est pas trouvé, affiche un message d'erreur
 if (!$user) {
     echo "Utilisateur non trouvé.";
     exit;
