@@ -25,7 +25,7 @@ $personal_info = $stmt->fetch();
 
 // Si les informations personnelles n'existent pas, les crée avec des valeurs par défaut
 if (!$personal_info) {
-    $stmt = $pdo->prepare('INSERT INTO personal_info (Users_id, name, title, email, phone, profile_description) VALUES (?, "", "", "", "", "")');
+    $stmt = $pdo->prepare('INSERT INTO personal_info (Users_id, name, title, email, phone, profile_description, github, linkedin) VALUES (?, "", "", "", "", "", "", "")');
     $stmt->execute([$user_id]);
     $stmt = $pdo->prepare('SELECT * FROM personal_info WHERE Users_id = ?');
     $stmt->execute([$user_id]);
@@ -33,7 +33,7 @@ if (!$personal_info) {
 }
 
 // Prépare et exécute une requête pour récupérer les informations de l'utilisateur
-$stmt = $pdo->prepare('SELECT u.username, p.name, p.title, p.email, p.phone, p.profile_description 
+$stmt = $pdo->prepare('SELECT u.username, p.name, p.title, p.email, p.phone, p.profile_description, p.github, p.linkedin 
                        FROM Users u 
                        JOIN personal_info p ON u.id = p.Users_id 
                        WHERE u.id = ?');
@@ -52,10 +52,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
     $phone = trim($_POST['phone']);
     $profile_description = trim($_POST['profile_description']);
+    $github = trim($_POST['github']);
+    $linkedin = trim($_POST['linkedin']);
 
     // Prépare et exécute une requête pour mettre à jour les informations personnelles
-    $stmt = $pdo->prepare('UPDATE personal_info SET name = ?, title = ?, email = ?, phone = ?, profile_description = ? WHERE Users_id = ?');
-    $stmt->execute([$name, $title, $email, $phone, $profile_description, $user_id]);
+    $stmt = $pdo->prepare('UPDATE personal_info SET name = ?, title = ?, email = ?, phone = ?, profile_description = ?, github = ?, linkedin = ? WHERE Users_id = ?');
+    $stmt->execute([$name, $title, $email, $phone, $profile_description, $github, $linkedin, $user_id]);
 
     // Redirige vers la page de profil
     header("Location: profile.php?id=$user_id");
@@ -63,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,6 +88,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone']); ?>" style="display:none;">
             <p><strong>Description:</strong> <?php echo nl2br(htmlspecialchars($user['profile_description'])); ?></p>
             <textarea id="profile_description" name="profile_description" style="display:none;"><?php echo htmlspecialchars($user['profile_description']); ?></textarea>
+            <p><strong>GitHub:</strong> <a href="<?php echo htmlspecialchars($user['github']); ?>" target="_blank"><?php echo htmlspecialchars($user['github']); ?></a></p>
+            <input type="text" id="github" name="github" value="<?php echo htmlspecialchars($user['github']); ?>" style="display:none;">
+            <p><strong>LinkedIn:</strong> <a href="<?php echo htmlspecialchars($user['linkedin']); ?>" target="_blank"><?php echo htmlspecialchars($user['linkedin']); ?></a></p>
+            <input type="text" id="linkedin" name="linkedin" value="<?php echo htmlspecialchars($user['linkedin']); ?>" style="display:none;">
             <?php if ($user_id === $current_user_id || $is_admin):?>
                 <button type="button" onclick="editAllFields()">Modifier</button>
                 <button type="submit" style="display:none;" id="saveButton">Enregistrer</button>

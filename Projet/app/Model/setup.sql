@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS personal_info (
     email VARCHAR(100) NOT NULL,
     phone VARCHAR(20) NOT NULL,
     profile_description TEXT NOT NULL,
+    github VARCHAR(100) NOT NULL,
+    linkedin VARCHAR(100) NOT NULL,
     FOREIGN KEY (Users_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
@@ -45,8 +47,8 @@ CREATE TABLE IF NOT EXISTS CV (
     centre_interet VARCHAR(1500) NOT NULL,
     formation VARCHAR(1500) NOT NULL,
     experience VARCHAR(1500) NOT NULL,
-    bgColor VARCHAR(7) DEFAULT '#ffffff', -- Nouvelle colonne pour la couleur de fond
-    sidebarColor VARCHAR(7) DEFAULT '#f0f0f0', -- Nouvelle colonne pour la couleur de la barre latérale
+    bgColor VARCHAR(7) DEFAULT '#ffffff', 
+    sidebarColor VARCHAR(7) DEFAULT '#f0f0f0',
     FOREIGN KEY (Users_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
@@ -64,6 +66,3 @@ CREATE TABLE IF NOT EXISTS project (
     FOREIGN KEY (User_id) REFERENCES Users(id) ON DELETE CASCADE
 );
 
-ALTER TABLE CV 
-ADD COLUMN background_color VARCHAR(7) DEFAULT '#f4f4f4', 
-ADD COLUMN sidebar_color VARCHAR(7) DEFAULT '#007BFF';

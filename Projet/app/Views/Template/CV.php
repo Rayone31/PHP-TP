@@ -21,14 +21,14 @@ $stmt->execute([$user_id]);
 $cv_info = $stmt->fetch();
 
 if (!$cv_info) {
-    $stmt = $pdo->prepare('INSERT INTO CV (Users_id, name, title, contact, profil, competence, centre_interet, formation, experience) VALUES (?, "", "", "", "", "", "", "", "")');
+    $stmt = $pdo->prepare('INSERT INTO CV (Users_id, name, title, contact, profil, competence, centre_interet, formation, experience, bgColor, sidebarColor) VALUES (?, "", "", "", "", "", "", "", "", "#ffffff", "#f0f0f0")');
     $stmt->execute([$user_id]);
     $stmt = $pdo->prepare('SELECT * FROM CV WHERE Users_id = ?');
     $stmt->execute([$user_id]);
     $cv_info = $stmt->fetch();
 }
 
-$stmt = $pdo->prepare('SELECT u.username, c.id as cv_id, c.name, c.title, c.contact, c.profil, c.competence, c.centre_interet, c.formation, c.experience, c.background_color, c.sidebar_color 
+$stmt = $pdo->prepare('SELECT u.username, c.id as cv_id, c.name, c.title, c.contact, c.profil, c.competence, c.centre_interet, c.formation, c.experience, c.bgColor, c.sidebarColor 
                        FROM Users u 
                        JOIN CV c ON u.id = c.Users_id 
                        WHERE u.id = ?');
@@ -56,14 +56,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $formation = implode(',', array_map('trim', $_POST['formation']));
     $experience = implode(',', array_map('trim', $_POST['experience']));
     $visibility = trim($_POST['visibility']);
-    $background_color = trim($_POST['backgroundColor']);
-    $sidebar_color = trim($_POST['sidebarColor']);
+    $bgColor = trim($_POST['backgroundColor']);
+    $sidebarColor = trim($_POST['sidebarColor']);
 
     $stmt = $pdo->prepare('DELETE FROM CV_public WHERE CV_id = ?');
     $stmt->execute([$user['cv_id']]);
 
-    $stmt = $pdo->prepare('UPDATE CV SET name = ?, title = ?, contact = ?, profil = ?, competence = ?, centre_interet = ?, formation = ?, experience = ?, background_color = ?, sidebar_color = ? WHERE Users_id = ?');
-    if ($stmt->execute([$name, $title, $contact, $profil, $competence, $centre_interet, $formation, $experience, $background_color, $sidebar_color, $user_id])) {
+    $stmt = $pdo->prepare('UPDATE CV SET name = ?, title = ?, contact = ?, profil = ?, competence = ?, centre_interet = ?, formation = ?, experience = ?, bgColor = ?, sidebarColor = ? WHERE Users_id = ?');
+    if ($stmt->execute([$name, $title, $contact, $profil, $competence, $centre_interet, $formation, $experience, $bgColor, $sidebarColor, $user_id])) {
         if ($visibility === 'public') {
             $stmt = $pdo->prepare('INSERT INTO CV_public (CV_id) VALUES (?)');
             $stmt->execute([$user['cv_id']]);
@@ -107,9 +107,9 @@ if (strpos($user['contact'] ?? '', ',') !== false) {
         }
     </style>
 </head>
-<body style="background-color: <?php echo htmlspecialchars($cv_info['background_color'] ?? '#f4f4f4'); ?>;">
+<body style="background-color: <?php echo htmlspecialchars($cv_info['bgColor'] ?? '#f4f4f4'); ?>;">
     <div class="cv-container">
-        <div class="sidebar" style="background-color: <?php echo htmlspecialchars($user['sidebar_color'] ?? '#007BFF'); ?>;">
+        <div class="sidebar" style="background-color: <?php echo htmlspecialchars($user['sidebarColor'] ?? '#007BFF'); ?>;">
             <h2 class="title"><?php echo htmlspecialchars($user['title'] ?? ''); ?></h2>
             <p class="username"><?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
             <h2>Contact</h2>
@@ -210,14 +210,14 @@ if (strpos($user['contact'] ?? '', ',') !== false) {
                 
                 <div class="color-option hidden-input">
                     <label for="backgroundColor">Couleur de fond:</label>
-                    <input type="color" id="backgroundColor" name="backgroundColor" value="#f4f4f4" oninput="updateColorPreview('backgroundColorPreview', this.value)">
-                    <div id="backgroundColorPreview" class="color-preview" style="background-color: #f4f4f4;"></div>
+                    <input type="color" id="backgroundColor" name="backgroundColor" value="<?php echo htmlspecialchars($cv_info['bgColor'] ?? '#f4f4f4'); ?>" oninput="updateColorPreview('backgroundColorPreview', this.value)">
+                    <div id="backgroundColorPreview" class="color-preview" style="background-color: <?php echo htmlspecialchars($cv_info['bgColor'] ?? '#f4f4f4'); ?>;"></div>
                 </div>
                 
                 <div class="color-option hidden-input">
                     <label for="sidebarColor">Couleur de la barre latérale:</label>
-                    <input type="color" id="sidebarColor" name="sidebarColor" value="#007BFF" oninput="updateColorPreview('sidebarColorPreview', this.value)">
-                    <div id="sidebarColorPreview" class="color-preview" style="background-color: #007BFF;"></div>
+                    <input type="color" id="sidebarColor" name="sidebarColor" value="<?php echo htmlspecialchars($cv_info['sidebarColor'] ?? '#007BFF'); ?>" oninput="updateColorPreview('sidebarColorPreview', this.value)">
+                    <div id="sidebarColorPreview" class="color-preview" style="background-color: <?php echo htmlspecialchars($cv_info['sidebarColor'] ?? '#007BFF'); ?>;"></div>
                 </div>
             <?php endif; ?>
         </form>
