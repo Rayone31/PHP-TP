@@ -1,3 +1,7 @@
+function updateColorPreview(previewId, color) {
+    document.getElementById(previewId).style.backgroundColor = color;
+}
+
 function applyColors() {
     const backgroundColor = document.getElementById('backgroundColor').value;
     const sidebarColor = document.getElementById('sidebarColor').value;

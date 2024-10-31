@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS CV (
     Users_id INT NOT NULL,
     title VARCHAR(150) NOT NULL,
     name VARCHAR(100) NOT NULL,
-    profil VARCHAR(100) NOT NULL,
+    profil VARCHAR(1500) NOT NULL,
     contact VARCHAR(1000) NOT NULL,
     competence VARCHAR(1500) NOT NULL,
     centre_interet VARCHAR(1500) NOT NULL,
@@ -65,4 +65,3 @@ CREATE TABLE IF NOT EXISTS project (
     description TEXT NOT NULL,
     FOREIGN KEY (User_id) REFERENCES Users(id) ON DELETE CASCADE
 );
-

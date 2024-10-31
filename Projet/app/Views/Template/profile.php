@@ -76,6 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="navbar">
         <h1>Profil de <?php echo htmlspecialchars($user['username']); ?></h1>
     </div>
+    <!-- Affiche les informations de l'utilisateur -->
     <div class="profile-content">
         <form method="POST" action="">
             <h2><?php echo htmlspecialchars($user['name']); ?></h2>

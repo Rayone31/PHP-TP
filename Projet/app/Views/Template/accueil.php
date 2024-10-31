@@ -33,6 +33,7 @@ $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="username-box">
         Utilisateur connecté : <?php echo htmlspecialchars($username); ?>
     </div>
+    <!-- Affiche les CV publics -->
     <div class="main-content">
         <div class="card-container">
             <?php foreach ($public_cvs as $cv):?>
@@ -45,6 +46,7 @@ $public_cvs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endforeach; ?>
         </div>
     </div>
+    <!-- Menu d'option -->
     <div class="sidebar">
         <h2>Options</h2>
         <ul>

@@ -4,15 +4,18 @@ require '../../Model/db.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
-
+    
+    
     if (empty($username) || empty($password)) {
         $error = 'Veuillez remplir tous les champs.';
     } else {
+        // Vérifie si le nom d'utilisateur existe déjà dans la base de données
         $stmt = $pdo->prepare('SELECT COUNT(*) FROM Users WHERE username = ?');
         $stmt->execute([$username]);
         if ($stmt->fetchColumn() > 0) {
             $error = 'Nom d\'utilisateur déjà pris.';
         } else {
+            // Hash le mot de passe avant de l'insérer dans la base de données
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO Users (username, password) VALUES (:username, :password)";
