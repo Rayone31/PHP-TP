@@ -17,6 +17,7 @@ Collaboration: Users can collaborate on projects in groups
 Rights management: Users can choose who to share their CVs and projects with (private, public or user-specific).
 Data protecgittion: Encrypting passwords and implementing best practices for data security.
 
+_____________________________________________________________________________________________________________________________________________________________________________
 
 CV-PHP Platform - Plateforme de création et de partage de CV en ligne
 Description
@@ -61,3 +62,27 @@ cd docker
 Étape 5
 Démarrer les services Docker
 docker-compose up
+
+étape 6 
+se connecter a la page 
+127.0.0.1
+
+Root:
+127.0.0.1:8080
+
+user : root
+mdp : root
+
+étape 7 
+
+importer la table setup.sql qui se trouve dans :
+
+Projet\app\Model\setup.sql
+
+Problème non résolue :
+
+-Dossier Controller vide 
+-system de route pas présent 
+-system de mot de passe oublier avec email
+-system de sauvegarde de base de donnée 
+-...
